@@ -2,7 +2,7 @@ pipeline:
   build:
     image: metwork/mfcom-${OS_VERSION}-buildimage:integration
     commands:
-      - make MAPSERVER_LIB_DIR=/opt/metwork-mfext/opt/mapserver/lib PREFIX=/opt/metwork-mfext/opt/mapserver clean all test install
+      - /opt/metwork-mfext/bin/mfext_wrapper layer_wrapper --layers=mapserver@mfext -- make MAPSERVER_LIB_DIR=/opt/metwork-mfext/opt/mapserver/lib PREFIX=/opt/metwork-mfext/opt/mapserver clean all test install
 
 matrix:
   OS_VERSION:
