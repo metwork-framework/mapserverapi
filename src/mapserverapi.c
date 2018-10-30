@@ -89,7 +89,7 @@ gboolean mapserverapi_invoke(const gchar *mapfile_content, const gchar *query_st
     res = TRUE;
     g_debug("Calling mapserver with query_string[%s]...", mapserver_qs);
     mapserver_status = msCGIHandler(mapserver_qs, &mapserver_buffer, &mapserver_buffer_length);
-    //unlink(mapfile_path);
+    unlink(mapfile_path);
     g_free(mapfile_path);
     if (mapserver_status != 0) {
         g_warning("bad reply from mapserver for query_string = %s", mapserver_qs);
