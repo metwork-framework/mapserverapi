@@ -29,6 +29,8 @@ void test_mapserverapi_invoke()
     gchar *path = g_strdup_printf("%s/test.map", directory);
     g_file_get_contents(path, &contents, NULL, NULL);
     gchar *datapath = get_data_path();
+    g_debug("path = %s", path);
+    g_debug("datapath = %s", datapath);
     gchar **split = g_strsplit((const gchar*) contents, "{DATAPATH}", -1);
     g_free(contents);
     contents = g_strjoinv(datapath, split);
