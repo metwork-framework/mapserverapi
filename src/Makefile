@@ -33,14 +33,16 @@ libmapserverapi.so: $(OBJECTS)
 	$(CC) -shared $(_CFLAGS) $(_LDFLAGS) -o $@ $^
 
 install: all
-	if ! test -d $(PREFIX)/lib; then mkdir -p $(PREFIX)/lib; fi
+	if ! test -d $(PREFIX)/lib/pkgconfig; then mkdir -p $(PREFIX)/lib/pkgconfig; fi
 	if ! test -d $(PREFIX)/include; then mkdir -p $(PREFIX)/include; fi
 	cp -f libmapserverapi.so $(PREFIX)/lib/
 	cp -f mapserverapi.h $(PREFIX)/include/
+	cp -f mapserverapi.pc $(PREFIX)/lib/pkgconfig/
 
 uninstall:
 	rm -f $(PREFIX)/lib/libmapserverapi.so
 	rm -f $(PREFIX)/include/mapserverapi.h
+	rm -f $(PREFIX)/lib/pkgconfig/mapserverapi.pc
 
 test: all
 	valgrind --show-possibly-lost=no --leak-check=full ./test_mapserverapi
