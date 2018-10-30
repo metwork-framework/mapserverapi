@@ -1,0 +1,11 @@
+prefix=@@@PREFIX@@@@
+exec_prefix=@@@PREFIX@@@
+libdir=@@@PREFIX@@@/lib
+includedir=@@@PREFIX@@@/include
+
+Name: mapserverapi
+Description: tiny library to invoke mapserver as a library
+Version: 0.1.0
+Requires: glib-2.0 gobject-2.0 gthread-2.0
+Libs: -L$(libdir) -lmapserverapi -L@@@MAPSERVER_LIB_DIR@@@ -lmapserver
+Cflags: -I$(includedir)

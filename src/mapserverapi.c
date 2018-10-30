@@ -35,13 +35,20 @@ void mapserverapi_init() {
 }
 
 void mapserverapi_destroy() {
+    if (__MAPSERVERAPI_INITIALIZED == FALSE) {
+        g_critical("mapserverapi not initialized: call mapserverapi_init() before");
+        g_assert(__MAPSERVERAPI_INITIALIZED == TRUE);
+    }
     msIO_resetHandlers();
     __MAPSERVERAPI_INITIALIZED = FALSE;
+    g_free(__MAPSERVERAPI_TMPDIR);
 }
 
 gchar *get_tmpfilename() {
-    gchar *tmp = g_strdup_printf("%s/mapserverapi/%s", __MAPSERVERAPI_TMPDIR,
-            get_unique_hexa_identifier());
+    gchar *unique = get_unique_hexa_identifier();
+    gchar *tmp = g_strdup_printf("%s/mapserverapi_%s.map", __MAPSERVERAPI_TMPDIR,
+            unique);
+    g_free(unique);
     return tmp;
 }
 
@@ -53,7 +60,8 @@ void assert_mapserverapi_initialized() {
 }
 
 gboolean mapserverapi_invoke(const gchar *mapfile_content, const gchar *query_string, void **body,
-        gchar **content_type, gsize *body_length) {
+    gchar **content_type, gsize *body_length) {
+    assert_mapserverapi_initialized();
     g_assert(mapfile_content != NULL);
     g_assert(body != NULL);
     g_assert(query_string != NULL);
@@ -81,7 +89,7 @@ gboolean mapserverapi_invoke(const gchar *mapfile_content, const gchar *query_st
     res = TRUE;
     g_debug("Calling mapserver with query_string[%s]...", mapserver_qs);
     mapserver_status = msCGIHandler(mapserver_qs, &mapserver_buffer, &mapserver_buffer_length);
-    unlink(mapfile_path);
+    //unlink(mapfile_path);
     g_free(mapfile_path);
     if (mapserver_status != 0) {
         g_warning("bad reply from mapserver for query_string = %s", mapserver_qs);
@@ -120,7 +128,7 @@ gboolean mapserverapi_invoke(const gchar *mapfile_content, const gchar *query_st
     memcpy(ct, mapserver_buffer + 14 * sizeof(gchar), sizeof(gchar) * (end_of_ct - 14 + 2));
     ct[end_of_ct - 14 + 1] = '\0';
     if (content_type != NULL) {
-        *content_type = ct;
+        *content_type = g_strstrip(ct);
     } else {
         g_free(ct);
     }
