@@ -1,0 +1,10 @@
+pipeline:
+  build:
+    image: metwork/mfcom-${OS_VERSION}-buildimage:master
+    commands:
+      make MAPSERVER_LIB_DIR=/opt/metwork-mfext/opt/mapserver/lib PREFIX=/opt/metwork-mfext-opt/mapserver clean all test install
+
+matrix:
+  OS_VERSION:
+    - centos6
+    - centos7
