@@ -1,16 +1,32 @@
 #include <glib.h>
 #include <glib-object.h>
 #include <glib/gtestutils.h>
+#include <limits.h>
+#include <stdlib.h>
 #include "mapserverapi.h"
-
-static gchar *directory = "../test_datas";
 
 gchar *get_data_path()
 {
-    gchar *tmp = g_get_current_dir();
-    gchar *res = g_strdup_printf("%s/../test_datas", tmp);
-    g_free(tmp);
+    gchar *res = NULL;
+    char *rp = realpath("../test_datas", NULL);
+    res = g_strdup(rp);
+    free(rp);
     return res;
+}
+
+gchar *get_mapfile_content()
+{
+    gchar *contents;
+    gchar *data_path = get_data_path();
+    gchar *path = g_strdup_printf("%s/test.map", data_path);
+    g_file_get_contents(path, &contents, NULL, NULL);
+    g_free(path);
+    gchar **split = g_strsplit((const gchar*) contents, "{DATAPATH}", -1);
+    g_free(contents);
+    contents = g_strjoinv(data_path, split);
+    g_free(data_path);
+    g_strfreev(split);
+    return contents;
 }
 
 void test_mapserverapi_init()
@@ -22,21 +38,10 @@ void test_mapserverapi_init()
 void test_mapserverapi_invoke()
 {
     mapserverapi_init();
-    gchar *contents;
+    gchar *contents = get_mapfile_content();
     void *body;
     gchar *content_type = NULL;
     gsize body_length;
-    gchar *path = g_strdup_printf("%s/test.map", directory);
-    g_file_get_contents(path, &contents, NULL, NULL);
-    gchar *datapath = get_data_path();
-    g_warning("path = %s", path);
-    g_warning("datapath = %s", datapath);
-    gchar **split = g_strsplit((const gchar*) contents, "{DATAPATH}", -1);
-    g_free(contents);
-    contents = g_strjoinv(datapath, split);
-    g_free(datapath);
-    g_strfreev(split);
-    g_free(path);
     gboolean b = mapserverapi_invoke(contents, "LAYERS=ocean&TRANSPARENT=true&FORMAT=image%2Fpng&SERVICE=WMS&VERSION=1.1.1&REQUEST=GetMap&STYLES=&EXCEPTIONS=application%2Fvnd.ogc.se_xml&SRS=EPSG%3A4326&BBOX=-180.0,-90.0,180.0,90.0&WIDTH=500&HEIGHT=250", &body, &content_type, &body_length);
     g_free(contents);
     g_assert(b == TRUE);

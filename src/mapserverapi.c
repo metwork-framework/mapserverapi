@@ -141,3 +141,28 @@ gboolean mapserverapi_invoke(const gchar *mapfile_content, const gchar *query_st
     g_free(mapserver_qs);
     return res;
 }
+
+gchar *mapserverapi_invoke_to_file(const gchar *mapfile_content, const gchar *query_string,
+        const gchar *target_file) {
+    void *body = NULL;
+    gsize body_length;
+    gchar *tmp_content_type = NULL;
+    gboolean res = mapserverapi_invoke(mapfile_content, query_string, &body,
+            &tmp_content_type, &body_length);
+    if (res == FALSE) {
+        return NULL;
+    }
+    GError *error = NULL;
+    gboolean res2 = g_file_set_contents(target_file, body, body_length, &error);
+    if (res2 == FALSE) {
+        g_warning("can't write mapserver output to target_file: %s", target_file);
+        if (error != NULL) {
+            g_warning("error message: %s", error->message);
+        }
+        g_free(body);
+        g_free(tmp_content_type);
+        return NULL;
+    }
+    g_free(body);
+    return tmp_content_type;
+}

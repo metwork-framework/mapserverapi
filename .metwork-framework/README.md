@@ -72,11 +72,22 @@ if (b == TRUE) {
     # you have the full body (PNG image in this example) in body variable.
     # you have the body length in body_length variable.
     # you have the content_type of the body in content_type variable.
+
+    # [...]
+
+    # free body and content_type when you have finished with them
+    g_free(body);
+    g_free(content_type);
 }
+
+# Another way to use the library, invoke mapserver and get the body in a file
+gchar *content_type2 = NULL;
+gboolean
 
 # Destroy the library
 mapserverapi_destroy();
 ```
+
 
 ### Uninstalling
 
