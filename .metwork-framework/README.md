@@ -69,14 +69,14 @@ gchar *content_type = NULL;
 gsize body_length;
 gboolean b = mapserverapi_invoke(mapfile_content, query_string, &body, &content_type, &body_length);
 if (b == TRUE) {
-    # you have the full body (PNG image in this example) in body variable.
+    # you have the full body (PNG image in this example) in body variable (this buffer is managed by the library, don't free it by yourself !)
     # you have the body length in body_length variable.
-    # you have the content_type of the body in content_type variable.
+    # you have the content_type of the body in content_type variable (you have to free it after use).
 
     # [...]
 
-    # free body and content_type when you have finished with them
-    g_free(body);
+    # free content_type when you have finished with them
+    # (but don't free body variable)
     g_free(content_type);
 }
 

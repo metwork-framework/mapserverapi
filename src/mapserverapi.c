@@ -159,10 +159,8 @@ gchar *mapserverapi_invoke_to_file(const gchar *mapfile_content, const gchar *qu
         if (error != NULL) {
             g_warning("error message: %s", error->message);
         }
-        g_free(body);
         g_free(tmp_content_type);
         return NULL;
     }
-    g_free(body);
     return tmp_content_type;
 }
