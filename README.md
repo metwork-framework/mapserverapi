@@ -104,16 +104,16 @@ make MAPSERVER_LIB_DIR=/opt/mapserver/lib PREFIX=/usr/local uninstall
 ```
 
 
+
+
 ## Contributing guide
 
 See [CONTRIBUTING.md](CONTRIBUTING.md) file.
 
 
 
-
 ## Code of Conduct
 
 See [CODE_OF_CONDUCT.md](CODE_OF_CONDUCT.md) file.
-
 
 
