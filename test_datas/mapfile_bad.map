@@ -1,0 +1,63 @@
+MAP
+  NAME cat
+  STATUS ON
+  EXTENT -50 -50 50 50
+  IMAGECOLOR 255 255 255
+
+        WEB
+                METADATA
+                "wfs_namespace_uri" "http://meteofrance.fr/metgate"
+                "wfs_onlineresource" "None/wfs?"
+                "wfs_namespace_prefix" "cat"
+                "ows_enable_request" "*"
+                "wfs_enable_request" "*"
+                "ows_contactfacsimiletelephone" ""
+                "ows_fees" ""
+                "ows_accessconstraints" ""
+                "ows_keywordlist" ""
+                "ows_title" "foo"
+                "ows_abstract" "foo"
+                "ows_contactorganization" "foo"
+                "ows_contactelectronicmailaddress" ""
+                "ows_contactperson" ""
+                "ows_contactposition" ""
+                "ows_contactvoicetelephone" ""
+                "ows_address" ""
+                "ows_city" ""
+                "ows_stateorprovince" ""
+                "ows_postcode" ""
+                "ows_country" ""
+                "ows_service_onlineresource" ""
+                "ows_hoursofservice" ""
+                "ows_contactinstructions" ""
+                "ows_role" ""
+
+                END
+        END
+  #
+  # Start of layers definitions
+  #
+
+  LAYER
+        # NAME = PRODUCT_INSTANCE_ID
+        NAME cat_20181230000000
+        TYPE POLYGON
+        STATUS ON
+        CONNECTIONTYPE POSTGIS
+        CONNECTION "host=localhost dbname=foo user=foo password=foo port=7432"
+        METADATA
+                # wfs_title = PRODUCT_ID PRODUCT_INSTANCE_DATE
+                "wfs_title" "cat 20181230000000" ##REQUIRED
+                # wfs_srs = crs of the product
+                "wfs_srs" "ESPG_7030" ## REQUIRED
+
+                "gml_include_items" "all" ## Optional (serves all attributes for layer)
+                "wfs_enable_request" "*"
+        END
+
+        # DATA = "wkb_geometry from instance_postgis_table_name"
+        # Note : column name inserted by OGR2OGR wkb_geometry
+        DATA "wkb_geometry from cat_20181230000000"
+  END
+
+END # Map File

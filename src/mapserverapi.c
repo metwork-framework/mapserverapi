@@ -67,6 +67,7 @@ gboolean mapserverapi_invoke(const gchar *mapfile_content, const gchar *query_st
     g_assert(query_string != NULL);
     g_assert(strlen(query_string) > 0);
     gboolean res;
+    gsize i;
     gchar *mapfile_path = get_tmpfilename();
     res = g_file_set_contents(mapfile_path, mapfile_content, -1, NULL);
     if (!res) {
@@ -78,7 +79,7 @@ gboolean mapserverapi_invoke(const gchar *mapfile_content, const gchar *query_st
     g_string_append_printf(gs, "MAP=%s", mapfile_path);
     gs = g_string_append_c(gs, '&');
     if (query_string[0] == '?') {
-        gs = g_string_append(gs, query_string + sizeof(gchar));
+        gs = g_string_append(gs, query_string + 1);
     } else {
         gs = g_string_append(gs, query_string);
     }
@@ -100,43 +101,46 @@ gboolean mapserverapi_invoke(const gchar *mapfile_content, const gchar *query_st
         g_free(mapserver_qs);
         return FALSE;
     }
-    if (strncasecmp((const char*) mapserver_buffer, "Content-type: ", 14) != 0) {
-        g_warning("bad reply from mapserver for query_string = %s (no Content-Type)", mapserver_qs);
+    gsize last_i = 0;
+    gchar *ct = NULL;
+    const char *mb = (char*) mapserver_buffer;
+    for (i = 0 ; i < mapserver_buffer_length - 1 ; i++) {
+        if (i > 100) {
+            break;
+        }
+        if ((mb[i] == '\r') && (mb[i+1] == '\n')) {
+            if (i == last_i) {
+                last_i = i + 2;
+                break;
+            }
+            if (strncmp(mb + last_i, "Content-Type: ", 14) == 0) {
+                ct = g_malloc(i - last_i - 14 + 1);
+                ct[i - last_i - 14] = '\0';
+                memcpy(ct, mapserver_buffer + (last_i + 14), i - last_i - 14);
+            }
+            last_i = i + 2;
+        }
+    }
+    if (i >= mapserver_buffer_length) {
+        g_message("bad reply from mapserver for query_string = %s (no body found)", mapserver_qs);
         g_free(mapserver_qs);
         return FALSE;
     }
-    int end_of_ct = 13;
-    while ((end_of_ct + 1 < mapserver_buffer_length) && (((char*)mapserver_buffer)[end_of_ct + 1] != 10)) {
-        end_of_ct++;
-    }
-    if (end_of_ct + 1 == mapserver_buffer_length) {
-        g_warning("bad reply from mapserver for query_string = %s (bad Content-Type)", query_string);
+    if (ct == NULL) {
+        g_message("bad reply from mapserver for query_string = %s (no Content-Type found)", mapserver_qs);
         g_free(mapserver_qs);
         return FALSE;
     }
-    int start_of_data = end_of_ct + 2;
-    while ((start_of_data < mapserver_buffer_length) && (((char*)mapserver_buffer)[start_of_data] != 10)) {
-        start_of_data++;
-    }
-    if (start_of_data == mapserver_buffer_length) {
-        g_warning("bad reply from mapserver for query_string = %s (corrupt Content-Type)", mapserver_qs);
-        g_free(mapserver_qs);
-        return FALSE;
-    }
-    start_of_data++;
-    gchar *ct = g_malloc((end_of_ct - 14 + 2) * sizeof(gchar));
-    memcpy(ct, mapserver_buffer + 14 * sizeof(gchar), sizeof(gchar) * (end_of_ct - 14 + 2));
-    ct[end_of_ct - 14 + 1] = '\0';
     if (content_type != NULL) {
-        *content_type = g_strstrip(ct);
+        *content_type = ct;
     } else {
         g_free(ct);
     }
     if (body != NULL) {
-        *body = mapserver_buffer + start_of_data * sizeof(gchar);
+        *body = mapserver_buffer + last_i;
     }
     if (body_length != NULL) {
-        *body_length = mapserver_buffer_length - start_of_data;
+        *body_length = mapserver_buffer_length - last_i;
     }
     g_free(mapserver_qs);
     return res;
