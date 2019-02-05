@@ -1,6 +1,9 @@
 <a name="unreleased"></a>
 ## [Unreleased]
 
+### Fix
+- the pkgconfig config file
+
 <a name="0.1.1"></a>
 ## [0.1.1] - 2018-12-04
 ### Fix
