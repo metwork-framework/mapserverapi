@@ -89,10 +89,6 @@ if (b == TRUE) {
     g_free(content_type);
 }
 
-# Another way to use the library, invoke mapserver and get the body in a file
-gchar *content_type2 = NULL;
-gboolean
-
 # Destroy the library
 mapserverapi_destroy();
 ```
