@@ -32,6 +32,7 @@ void mapserverapi_init() {
         return;
     }
     __MAPSERVERAPI_TMPDIR = g_strdup("/tmp");
+    msSetup();
 }
 
 void mapserverapi_destroy() {
@@ -40,6 +41,7 @@ void mapserverapi_destroy() {
         g_assert(__MAPSERVERAPI_INITIALIZED == TRUE);
     }
     msIO_resetHandlers();
+    msCleanup();
     __MAPSERVERAPI_INITIALIZED = FALSE;
     g_free(__MAPSERVERAPI_TMPDIR);
 }
