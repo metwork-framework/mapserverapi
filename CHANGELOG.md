@@ -1,7 +1,10 @@
 <a name="unreleased"></a>
 ## [Unreleased]
 
+<a name="0.1.2"></a>
+## [0.1.2] - 2019-02-05
 ### Fix
+- fix mapserver crash in some corner cases
 - the pkgconfig config file
 
 <a name="0.1.1"></a>
