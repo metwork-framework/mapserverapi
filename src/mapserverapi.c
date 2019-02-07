@@ -8,6 +8,7 @@
 
 static gboolean __MAPSERVERAPI_INITIALIZED = FALSE;
 static gchar *__MAPSERVERAPI_TMPDIR = NULL;
+static gboolean __MAPSERVER_SETUP = FALSE;
 
 void mapserverapi_init() {
     if (__MAPSERVERAPI_INITIALIZED) {
@@ -32,7 +33,10 @@ void mapserverapi_init() {
         return;
     }
     __MAPSERVERAPI_TMPDIR = g_strdup("/tmp");
-    msSetup();
+    if (__MAPSERVER_SETUP == FALSE) {
+        msSetup();
+        __MAPSERVER_SETUP = TRUE;
+    }
 }
 
 void mapserverapi_destroy() {
@@ -41,7 +45,6 @@ void mapserverapi_destroy() {
         g_assert(__MAPSERVERAPI_INITIALIZED == TRUE);
     }
     msIO_resetHandlers();
-    msCleanup();
     __MAPSERVERAPI_INITIALIZED = FALSE;
     g_free(__MAPSERVERAPI_TMPDIR);
 }
