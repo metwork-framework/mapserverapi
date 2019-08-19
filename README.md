@@ -59,43 +59,38 @@ environnement variable.
 
 ```C
 #include <mapserverapi.h>
-#include <stdio.h>
-#include <stdlib.h>
-#include <glib.h>
 
 // [...]
 
-int main(void) {
-    // Init the library (mandatory)
-    mapserverapi_init();
+# Init the library (mandatory)
+mapserverapi_init();
 
-    gchar *mapfile_content;
-    // [...]
-    // Put a mapfile content into mapfile_content string
+gchar *mapfile_content;
+# [...]
+# Put a mapfile content into mapfile_content string
 
-    // Set a WMS query_string (for this example)
-    gchar *query_string = "LAYERS=ocean&TRANSPARENT=true&FORMAT=image%2Fpng&SERVICE=WMS&VERSION=1.1.1&REQUEST=GetMap&STYLES=&EXCEPTIONS=application%2Fvnd.ogc.se_xml&SRS=EPSG%3A4326&BBOX=-180.0,-90.0,180.0,90.0&WIDTH=500&HEIGHT=250"
+# Set a WMS query_string (for this example)
+gchar *query_string = "LAYERS=ocean&TRANSPARENT=true&FORMAT=image%2Fpng&SERVICE=WMS&VERSION=1.1.1&REQUEST=GetMap&STYLES=&EXCEPTIONS=application%2Fvnd.ogc.se_xml&SRS=EPSG%3A4326&BBOX=-180.0,-90.0,180.0,90.0&WIDTH=500&HEIGHT=250"
 
-    // Invoke mapserver
-    void *body;
-    gchar *content_type = NULL;
-    gsize body_length;
-    gboolean b = mapserverapi_invoke(mapfile_content, query_string, &body, &content_type, &body_length);
-    if (b == TRUE) {
-        // you have the full body (PNG image in this example) in body variable (this buffer is managed by the library, don't free it by yourself !)
-        // you have the body length in body_length variable.
-        // you have the content_type of the body in content_type variable (you have to free it after use).
-    
-        // [...]
-    
-        // free content_type when you have finished with them
-        // (but don't free body variable)
-        g_free(content_type);
-    }
-    
-    // Destroy the library
-    mapserverapi_destroy();
+# Invoke mapserver
+void *body;
+gchar *content_type = NULL;
+gsize body_length;
+gboolean b = mapserverapi_invoke(mapfile_content, query_string, &body, &content_type, &body_length);
+if (b == TRUE) {
+    # you have the full body (PNG image in this example) in body variable (this buffer is managed by the library, don't free it by yourself !)
+    # you have the body length in body_length variable.
+    # you have the content_type of the body in content_type variable (you have to free it after use).
+
+    # [...]
+
+    # free content_type when you have finished with them
+    # (but don't free body variable)
+    g_free(content_type);
 }
+
+# Destroy the library
+mapserverapi_destroy();
 ```
 
 
