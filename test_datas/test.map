@@ -10,6 +10,8 @@ MAP
             "wms_onlineresource"  "http://demo.mapserver.org/cgi-bin/mapserv7?"
             "wms_srs"             "EPSG:4326"
             "ows_enable_request"  "*"
+            "wfs_onlineresource"  "https://demo.mapserver.org/cgi-bin/mapserv/wfs?"
+            "wfs_enable_request"  "*"
         END
     END
     PROJECTION
