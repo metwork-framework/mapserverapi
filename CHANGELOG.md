@@ -1,5 +1,11 @@
 # CHANGELOG
 
+## 0.1.4 (2020-12-28)
+
+### Bug Fixes
+
+- fix for wfs requests with geos 3.8 (#13)
+
 ## 0.1.3 (2019-02-07)
 
 ### Bug Fixes
