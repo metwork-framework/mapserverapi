@@ -20,17 +20,14 @@ void mapserverapi_init() {
     tmp = g_getenv("MAPSERVERAPI_TMPDIR");
     if (tmp != NULL) {
         __MAPSERVERAPI_TMPDIR = g_strdup(tmp);
-        return;
     }
     tmp = g_getenv("TMPDIR");
     if (tmp != NULL) {
         __MAPSERVERAPI_TMPDIR = g_strdup(tmp);
-        return;
     }
     tmp = g_getenv("TMP");
     if (tmp != NULL) {
         __MAPSERVERAPI_TMPDIR = g_strdup(tmp);
-        return;
     }
     __MAPSERVERAPI_TMPDIR = g_strdup("/tmp");
     if (__MAPSERVER_SETUP == FALSE) {
