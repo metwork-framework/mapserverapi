@@ -1,5 +1,12 @@
 # CHANGELOG
 
+## 0.1.5 (2020-12-31)
+
+### Bug Fixes
+
+- fix for wfs requests with geos 3.8
+- fix https://github.com/metwork-framework/mapserverapi/issues/12
+
 ## 0.1.4 (2020-12-28)
 
 ### Bug Fixes
