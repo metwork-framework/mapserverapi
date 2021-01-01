@@ -21,15 +21,21 @@ void mapserverapi_init() {
     if (tmp != NULL) {
         __MAPSERVERAPI_TMPDIR = g_strdup(tmp);
     }
-    tmp = g_getenv("TMPDIR");
-    if (tmp != NULL) {
-        __MAPSERVERAPI_TMPDIR = g_strdup(tmp);
+    else {
+        tmp = g_getenv("TMPDIR");
+        if (tmp != NULL) {
+            __MAPSERVERAPI_TMPDIR = g_strdup(tmp);
+        }
+        else {
+            tmp = g_getenv("TMP");
+            if (tmp != NULL) {
+                __MAPSERVERAPI_TMPDIR = g_strdup(tmp);
+            }
+            else {
+                __MAPSERVERAPI_TMPDIR = g_strdup("/tmp");
+            }
+        }
     }
-    tmp = g_getenv("TMP");
-    if (tmp != NULL) {
-        __MAPSERVERAPI_TMPDIR = g_strdup(tmp);
-    }
-    __MAPSERVERAPI_TMPDIR = g_strdup("/tmp");
     if (__MAPSERVER_SETUP == FALSE) {
         msSetup();
         __MAPSERVER_SETUP = TRUE;
