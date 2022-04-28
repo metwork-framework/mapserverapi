@@ -2,19 +2,19 @@ name: CI
 
 on:
   push:
-    branches: [ master ]
+    branches:
+      - master
   pull_request:
-    branches: [ master ]
+    branches:
+      - master
 
 jobs:
   build:
-
     runs-on: metwork/mfxxx-centos8-buildimage:integration
-
     steps:
       - name: checkout repository
         uses: actions/checkout@v2
-    - name: build test install
-      run: |
-        yum -y install metwork-mfext-layer-mapserver
-        /opt/metwork-mfext/bin/mfext_wrapper layer_wrapper --layers=mapserver@mfext -- make MAPSERVER_LIB_DIR=/opt/metwork-mfext/opt/mapserver/lib PREFIX=/opt/metwork-mfext/opt/mapserver clean all test install
+      - name: build test install
+        run: |
+          yum -y install metwork-mfext-layer-mapserver
+          /opt/metwork-mfext/bin/mfext_wrapper layer_wrapper --layers=mapserver@mfext -- make MAPSERVER_LIB_DIR=/opt/metwork-mfext/opt/mapserver/lib PREFIX=/opt/metwork-mfext/opt/mapserver clean all test install
