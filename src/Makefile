@@ -27,10 +27,10 @@ mapserverapi.o: mapserverapi.c mapserverapi.h
 	$(CC) -c $(_CFLAGS) -o $@ $<
 
 test_mapserverapi: test_mapserverapi.c $(OBJECTS)
-	$(CC) $(_CFLAGS) $(_LDFLAGS) -o $@ $^
+	$(CC) $(_CFLAGS) -o $@ $^ $(_LDFLAGS)
 
 libmapserverapi.so: $(OBJECTS)
-	$(CC) -shared $(_CFLAGS) $(_LDFLAGS) -o $@ $^
+	$(CC) -shared $(_CFLAGS) -o $@ $^ $(_LDFLAGS)
 
 install: all
 	if ! test -d $(PREFIX)/lib/pkgconfig; then mkdir -p $(PREFIX)/lib/pkgconfig; fi
