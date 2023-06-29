@@ -11,7 +11,7 @@ on:
 jobs:
   sonarcloud:
     #runs-on: ubuntu-20.04
-    runs-on: [self-hosted, metwork]
+    runs-on: [self-hosted, metwork, mapserverapi]
     env:
       BUILD_WRAPPER_OUT_DIR: build_wrapper_output_directory
     steps:
