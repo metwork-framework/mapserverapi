@@ -13,7 +13,7 @@ on:
 env:
     DOCKER_RUN_OPTIONS: "-v ${{ github.workspace }}:/src"
     DOCKER_WORKFLOW_SCRIPTS_DIR: /src/.github/workflows
-    BUILDIMAGE: metwork/mfxxx-centos8-buildimage:integration
+    BUILDIMAGE: metwork/mfxxx-centos8-buildimage:experimental_mapserver8
 
 jobs:
   build:
