@@ -28,12 +28,13 @@ as a library (with no daemon or CGI).
 To build the library you must specify:
 
 - `MAPSERVER_LIB_DIR`: the full path of the directory containing `libmapserver.so`
+- (since mapserver 8) `MAPSERVER_CONFIG_FILE`: the full path of the mapserver config file
 - `PREFIX`: the full path of the directory where you want to install the library
 
 For example:
 
 ```
-make MAPSERVER_LIB_DIR=/opt/mapserver/lib PREFIX=/usr/local clean all install
+make MAPSERVER_LIB_DIR=/opt/mapserver/lib MAPSERVER_CONFIG_FILE=/opt/mapserver/etc/mapserver.conf PREFIX=/usr/local clean all install
 ```
 
 ### Testing

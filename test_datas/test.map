@@ -7,7 +7,7 @@ MAP
         IMAGEPATH "/tmp/"
         METADATA
             "wms_title"           "WMS Demo Server"
-            "wms_onlineresource"  "http://demo.mapserver.org/cgi-bin/mapserv7?"
+            "wms_onlineresource"  "http://demo.mapserver.org/cgi-bin/mapserv?"
             "wms_srs"             "EPSG:4326"
             "ows_enable_request"  "*"
             "wfs_onlineresource"  "https://demo.mapserver.org/cgi-bin/mapserv/wfs?"
