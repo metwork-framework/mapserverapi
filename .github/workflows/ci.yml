@@ -9,6 +9,7 @@ on:
     branches:
       - master
       - experimental*
+  workflow_dispatch:
 
 env:
     DOCKER_RUN_OPTIONS: "-v ${{ github.workspace }}:/src"
