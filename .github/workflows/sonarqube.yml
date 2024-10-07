@@ -23,8 +23,9 @@ jobs:
       uses: sonarsource/sonarcloud-github-c-cpp@v3
     - name: Run build-wrapper
       run: |
+        yum install g++
         gcc --version
-        build-wrapper-linux-x86-64 --out-dir ${{ env.BUILD_WRAPPER_OUT_DIR }} /opt/metwork-mfext-2.1/bin/mfext_wrapper layer_wrapper --layers=mapserver@mfext -- make MAPSERVER_LIB_DIR=/opt/metwork-mfext-2.1/opt/mapserver/lib PREFIX=/opt/metwork-mfext-2.1/opt/mapserver clean all test
+        build-wrapper-linux-x86-64 --out-dir ${{ env.BUILD_WRAPPER_OUT_DIR }} /opt/metwork-mfext/bin/mfext_wrapper layer_wrapper --layers=mapserver@mfext -- make MAPSERVER_LIB_DIR=/opt/metwork-mfext/opt/mapserver/lib PREFIX=/opt/metwork-mfext/opt/mapserver clean all test
     - name: Run sonar-scanner
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
